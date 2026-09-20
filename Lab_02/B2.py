@@ -4,6 +4,12 @@ def school_round(num: float, digits: int):
     factor = 10 ** digits
     return round(int(abs(num) * factor + 0.5) * ((num > 0) - (num < 0)) / factor, digits)
 
+
+#введём функцию, которая считает среднее арифметическое
+def average(nums: list):
+    return sum(nums) / len(nums)
+
+
 #открываем файл и записываем его строки в lines
 with open('1.WCData.txt', 'r') as file1:
     lines = file1.read().splitlines()
@@ -26,3 +32,17 @@ wc_effect = []
 for i in range(len(time)):
     wc_temp.append(school_round(35.74 + 0.6125 * air_temp[i] + (0.4275 * air_temp[i] - 35.75) * wind_speed[i] ** 0.16, 1))
     wc_effect.append(school_round(wc_temp[i] - air_temp[i], 1))
+
+#создаём файл и записываем в него
+with open('1.WindChillReport.txt', 'w', encoding='utf-8') as file2:
+    file2.write('Time     WC temp     WC Effect\n')
+    file2.write('-' * 30 + '\n')
+
+    #записываем отформатированные строки
+    for i in range(len(time)):
+        file2.write(time[i] + ' {: 7} {: 13}\n'.format(wc_temp[i], wc_effect[i]))
+
+    #записываем финальную строчку файла, используя среднее арифметическое всех температур
+    file2.write('-' * 30 + '\n\n')
+    file2.write(
+        f'The average adjusted temperature, based on {len(time)} observations, was {school_round(average(wc_temp), 1)}\n')
