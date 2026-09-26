@@ -1,8 +1,17 @@
 #возьмем функцию округления из решения прошлой задачи и доработаем:
 #теперь корректно работает для отрицательных чисел
-def school_round(num: float, digits: int):
+def school_round(num: float, digits: int) -> float:
     factor = 10 ** digits
-    return round(int(abs(num) * factor + 0.5) * ((num > 0) - (num < 0)) / factor, digits)
+    #сдвигаем запятую вправо
+    shifted = num * factor
+    #прибавляем 0.5 для положительных
+    #или вычитаем 0.5 для отрицательных чисел
+    if num >= 0:
+        rounded = int(shifted + 0.5)
+    else:
+        rounded = int(shifted - 0.5)
+    #возвращаем запятую на место
+    return rounded / factor
 
 
 #введём функцию, которая считает среднее арифметическое

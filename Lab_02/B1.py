@@ -9,9 +9,14 @@
 #функция умножает num (например num = 0.06, digits = 1) на 10 в степени digits (0.06 * 10 = 0.6),
 #добавляет 0.5 (0.6 + 0.5 = 1.1), отбрасывает дробную часть числа (1.1 => 1) и делит на 10 в степени digits
 #(1 / 10 = 0.1 — результат аналогичен функции школьного округления, где 0.06 => 0.1, работает и с 0.05 => 0.1)
-def school_round(num: float, digits: int):
+def school_round(num: float, digits: int) -> float:
     factor = 10 ** digits
-    return int(num * factor + 0.5) / factor
+    # сдвигаем запятую вправо
+    shifted = num * factor
+    #прибавляем 0.5 и берём целую часть
+    rounded = int(shifted + 0.5)
+    #возвращаем запятую на место
+    return rounded / factor
 
 #открываем файл и записываем его строки в lines
 with open('inmap0.dat', 'r') as file:
