@@ -1,3 +1,7 @@
+#введём функцию, которая считает среднее арифметическое
+def average(nums: list):
+    return sum(nums) / len(nums)
+
 input_string = 'Введите номер файла: '
 
 # открываем файл
@@ -32,3 +36,16 @@ wc_effect = []
 for i in range(len(time)):
     wc_temp.append(round(35.74 + 0.6125 * air_temp[i] + (0.4275 * air_temp[i] - 35.75) * wind_speed[i] ** 0.16, 1))
     wc_effect.append(round(wc_temp[i] - air_temp[i], 1))
+
+#создаём файл и записываем в него
+with open(f'{n}.WindChillReport.txt', 'w', encoding='utf-8') as file2:
+    file2.write('Time     WC temp     WC Effect\n')
+    file2.write('-' * 30 + '\n')
+
+    #записываем отформатированные строки
+    for i in range(len(time)):
+        file2.write(time[i] + f' {wc_temp[i]: >7} {wc_effect[i]: >13}\n')
+
+    #записываем финальную строчку файла, используя среднее арифметическое всех температур
+    file2.write('-' * 30 + '\n\n')
+    file2.write(f'The average adjusted temperature, based on {len(time)} observations, was {round(average(wc_temp), 1)}\n')
