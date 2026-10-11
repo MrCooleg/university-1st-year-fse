@@ -55,3 +55,92 @@ output.append('-' * (len(output[1]) - 1) + '\n')
 #задаём переменную индекса в списке строк для вывода, в списке уже есть строки с индексами 0, 1 и 2,
 #значит следующая строка будет с индексом 3 и так далее
 k = 3
+
+#инициализируем переменные положения кота и его пройденного пути
+cat_row = ''
+cat_col = ''
+cat_path = 0
+
+#инициализируем переменные положения мыши и её пройденного пути
+mouse_row = ''
+mouse_col = ''
+mouse_path = 0
+
+#проходим по оставшимся строкам файла
+for i in range(1, len(lines)):
+    #проверяем, равны ли координаты между собой, если да — принудительно выходим из цикла (кот поймал мышь)
+    if cat_row != '' and cat_col != '' and mouse_row != '' and mouse_col != '':
+        if cat_row == mouse_row and cat_col == mouse_col:
+            break
+
+    #считываем команду
+    command = lines[i].split()[0]
+
+    #если команда C, то работаем с котом:
+    if command == 'C':
+        #записываем ход кота по вертикали и горизонтали
+        r_path = int(lines[i].split()[1])
+        c_path = int(lines[i].split()[2])
+
+        #считаем пройденное на этом ходу расстояние и прибавляем в сумму
+        if cat_row != '' and cat_col != '':
+            cat_path += abs(r_path) + abs(c_path)
+
+        #прибавляем перемещение по каждой оси к положению в этой оси
+        if cat_row == '':
+            cat_row += str(r_path)
+        else:
+            cat_row += r_path
+
+        if cat_col == '':
+            cat_col += str(c_path)
+        else:
+            cat_col += c_path
+
+        cat_row = int(cat_row)
+        cat_col = int(cat_col)
+
+        #если вышли за рамку, то перемещаемся так, как сказано в условии
+        while cat_row <= 0:
+            cat_row += rows
+        while cat_row > rows:
+            cat_row -= rows
+
+        while cat_col <= 0:
+            cat_col += cols
+        while cat_col > cols:
+            cat_col -= cols
+    #если команда M, то работаем с мышью:
+    elif command == 'M':
+        #записываем ход мыши по вертикали и горизонтали
+        r_path = int(lines[i].split()[1])
+        c_path = int(lines[i].split()[2])
+
+        #считаем пройденное на этом ходу расстояние и прибавляем в сумму
+        if mouse_row != '' and mouse_col != '':
+            mouse_path += abs(r_path) + abs(c_path)
+
+        #прибавляем перемещение по каждой оси к положению в этой оси
+        if mouse_row == '':
+            mouse_row += str(r_path)
+        else:
+            mouse_row += r_path
+
+        if mouse_col == '':
+            mouse_col += str(c_path)
+        else:
+            mouse_col += c_path
+
+        mouse_row = int(mouse_row)
+        mouse_col = int(mouse_col)
+
+        #если вышли за рамку, то перемещаемся так, как сказано в условии
+        while mouse_row <= 0:
+            mouse_row += rows
+        while mouse_row > rows:
+            mouse_row -= rows
+
+        while mouse_col <= 0:
+            mouse_col += cols
+        while mouse_col > cols:
+            mouse_col -= cols
