@@ -200,3 +200,41 @@ for i in range(1, len(lines)):
 
 #рисуем вторую черту
 output.append('-' * (len(output[2]) - 1) + '\n' * 3)
+
+#форматируем вторую таблицу:
+#каждая ячейка выровнена справа с отступом в 4 пробела между ячейками
+column_max_len = []
+column_names = ['Distance', 'Mouse', 'Cat']
+column_values = ['', str(mouse_path), str(cat_path)]
+
+output.append('')
+output.append('')
+k += 2
+
+#каждый столбец форматируем как раньше
+for j in range(len(column_names)):
+    column_max_len.append(max(len(column_names[j]), len(column_values[j])))
+    output[k - 1] += f'{column_names[j]: >{column_max_len[j]}}'
+    output[k] += f'{column_values[j]: >{column_max_len[j]}}'
+
+    if j == 0:
+        output[k - 1] += ' ' * 3 #отступы между ячейками 1 и 2 в этой и следующей строке — 3 пробела
+        output[k] += ' ' * 3
+    elif j == 1:
+        output[k - 1] += ' ' * 4 #отступы между ячейками 2 и 3 в этой и следующей строке — 4 пробела
+        output[k] += ' ' * 4
+    else:
+        output[k - 1] += '\n' #конец строки — переводим на следующую
+        output[k] += '\n\n' #конец строки — переводим на следующую и пропускаем еще одну строку
+
+#финальная строчка вывода с исходом игры
+if cat_row != '' and cat_col != '' and mouse_row != '' and mouse_col != '':
+    if cat_row == mouse_row and cat_col == mouse_col:
+        output.append(f'Mouse caught at: ({mouse_row: >{len(str(rows))}},{mouse_col: >{len(str(cols))}})\n')
+    else:
+        output.append('Mouse evaded Cat\n')
+
+#создаём файл и записываем каждую строку из списка для вывода в него
+with open(f'{n}.PursuitLog.txt', 'w', encoding='utf-8') as file2:
+    for line in output:
+        file2.write(line)
