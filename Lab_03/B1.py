@@ -144,3 +144,59 @@ for i in range(1, len(lines)):
             mouse_col += cols
         while mouse_col > cols:
             mouse_col -= cols
+    #если команда P, то выводим текущее состояние игры:
+    elif command == 'P':
+        #добавляем в список строк для вывода пустую строчку, с которой будем дальше работать
+        output.append('')
+
+        if cat_row != '' and cat_col != '' and mouse_row != '' and mouse_col != '':
+            #вычисляем расстояние между котом и мышью
+            distance_row = abs(cat_row - mouse_row) + 1  #разница между ординатами кота и мыши, увеличенная на 1
+            distance_col = abs(cat_col - mouse_col) + 1  #разница между абсциссами кота и мыши, увеличенная на 1
+            distance = distance_row + distance_col - 2  #сумма размеров прямоугольника, уменьшенная на 2
+            distance = f'{distance: >{len(str(rows + cols - 2))}}' #форматируем с выравниванием справа
+        else:
+            distance = ''
+
+        #инициализируем список значений в ячейках таблицы:
+        #проверяем, известна ли начальная позиция кота:
+        #если да — выравниваем число справа относительно самого большого числа под или над этим;
+        #если нет — представляем число как знак вопроса и делаем то же самое
+        if cat_row == '':
+            cat_row_str = f'{'?': >{len(str(rows))}}'
+        else:
+            cat_row_str = f'{cat_row: >{len(str(rows))}}'
+        if cat_col == '':
+            cat_col_str = f'{'?': >{len(str(cols))}}'
+        else:
+            cat_col_str = f'{cat_col: >{len(str(cols))}}'
+
+        #проверяем, известна ли начальная позиция мыши, форматируем так же
+        if mouse_row == '':
+            mouse_row_str = f'{'?': >{len(str(rows))}}'
+        else:
+            mouse_row_str = f'{mouse_row: >{len(str(rows))}}'
+        if mouse_col == '':
+            mouse_col_str = f'{'?': >{len(str(cols))}}'
+        else:
+            mouse_col_str = f'{mouse_col: >{len(str(cols))}}'
+
+        #для форматирования таблицы, где каждая ячейка выравнивается по центру, задаём список со значениями ячеек
+        column_values = [f'({cat_row_str},{cat_col_str})', f'({mouse_row_str},{mouse_col_str})', str(distance)]
+
+        #форматируем таблицу: содержимое каждого столбца таблицы выровнено по центру
+        for j in range(len(column_values)):
+            output[k] += f'{column_values[j]: ^{column_max_len[j]}}'
+
+            if j == 0:
+                output[k] += ' ' * 5 #отступ между ячейками 1 и 2 — 5 пробелов
+            elif j == 1:
+                output[k] += ' ' * 3 #отступ между ячейками 2 и 3 — 3 пробела
+            else:
+                output[k] += '\n' #в конце строки дописываем переход на новую строку
+
+        #увеличиваем индекс для следующей строки
+        k += 1
+
+#рисуем вторую черту
+output.append('-' * (len(output[2]) - 1) + '\n' * 3)
